@@ -1,65 +1,92 @@
+import codecs
+import csv
 import sqlite3
 
-class equipements :
-    def __init__(self, CODE_COMMUNE, NOM_COMMUNE, NUMERO_INSTALLATION, NOM_INSTALLATION, ID_EQUIPEMENTS, NOM_EQUIPEMENTS, AUCUN_ACCES_HANDICAPE_M, AUCUN_ACCES_HANDICAPE_S, GPS_X, GPS_Y):
-        self.CODE_COMMUNE = CODE_COMMUNE
-        self.NOM_COMMUNE = NOM_COMMUNE
-        self.NUMERO_INSTALLATION = NUMERO_INSTALLATION
-        self.NOM_INSTALLATION = NOM_INSTALLATION
-        self.ID_EQUIPEMENTS = ID_EQUIPEMENTS
-        self.NOM_EQUIPEMENTS = NOM_EQUIPEMENTS
-        self.AUCUN_ACCES_HANDICAPE_M = AUCUN_ACCES_HANDICAPE_M
-        self.AUCUN_ACCES_HANDICAPE_S = AUCUN_ACCES_HANDICAPE_S
-        self.GPS_X = GPS_X
-        self.GPS_Y = GPS_Y
+from classes.equipment import *
+from classes.activities_equipments import *
+from classes.installation import *
 
-class installations :
-    def __init__(self, NOM_INSTALLATIONS, NUMERO_INSTALLATON, NOM_COMMUNE, CODE_INSEE, CODE_POSTAL, LIEU_DIT, NUMERO_VOIE, NOM_VOIE, LOCATION, LONGITUDE, LATITUDE, AMENAGEMENT_ACCESSIBILITE, ACCESSIBILITE_HANDICAPE_MOBILITE_REDUITE, ACCESSIBILITE_HANDICAPE_SENSORIEL, PLACE_PARKING, PLACE_PARKING_HANDICAPE, INSTALLATION_PARTICULIERE, NB_EQUIPEMENTS_SPORTIFS):
-        self.NOM_INSTALLATIONS = NOM_INSTALLATIONS
-        self.NUMERO_INSTALLATON = NUMERO_INSTALLATON
-        self.NOM_COMMUNE = CODE_INSEE
-        self.CODE_POSTAL = CODE_POSTAL
-        self.LIEU_DIT = LIEU_DIT
-        self.NUMERO_VOIE = NUMERO_VOIE
-        self.NOM_VOIE = NOM_VOIE
-        self.LOCATION = LOCATION
-        self.LONGITUDE = LONGITUDE
-        self.LATITUDE = LATITUDE
-        self.AMENAGEMENT_ACCESSIBILITE = AMENAGEMENT_ACCESSIBILITE
-        self.ACCESSIBILITE_HANDICAPE_MOBILITE_REDUITE = ACCESSIBILITE_HANDICAPE_MOBILITE_REDUITE
-        self.ACCESSIBILITE_HANDICAPE_SENSORIEL = ACCESSIBILITE_HANDICAPE_SENSORIEL
-        self.PLACE_PARKING = PLACE_PARKING
-        self.PLACE_PARKING_HANDICAPE = PLACE_PARKING_HANDICAPE
-        self.INSTALLATION_PARTICULIERE = INSTALLATION_PARTICULIERE
-        self.NB_EQUIPEMENTS_SPORTIFS = NB_EQUIPEMENTS_SPORTIFS
+""" Fonction permettant de créer la base de données """
 
-class equipements_activites :
-    def __init__(self, CODE_COMMUNE, NOM_COMMUNE, ID_EQUIPEMENTS, ID_ACTIVITES, NOM_ACTIVITES, NIVEAU_ACTIVITE):
-        self.CODE_COMMUNE = CODE_COMMUNE
-        self.NOM_COMMUNE = NOM_COMMUNE
-        self.ID_EQUIPEMENTS = ID_EQUIPEMENTS
-        self.ID_ACTIVITES = ID_ACTIVITES
-        self.NOM_ACTIVITES = NOM_ACTIVITES
-        self.NIVEAU_ACTIVITE = NIVEAU_ACTIVITE
+def create_table():
+    #Connexion à la base de données
+    conn = sqlite3.connect('db/database.db')
+    c = conn.cursor()
 
-conn = sqlite3.connect("projet_python.db")
-c = conn.cursor()
+    #On supprime les tables si elles sont déjà existante, pour éviter une erreur
+    c.execute("DROP TABLE IF EXISTS installations")
+    c.execute("DROP TABLE IF EXISTS equipement")
+    c.execute("DROP TABLE IF EXISTS equipements_activites")
 
+    #On ajoute les tables, avec les colonnes, les clés primaires et étrangères
+    c.execute("CREATE TABLE installations ( NUMERO_INSTALLATON INT PRIMARY KEY NOT NULL,"\
+                                            "NOM_INSTALLATIONS VARCHAR(255) NOT NULL,"\
+                                            "NOM_COMMUNE VARCHAR(100),"\
+                                            "CODE_POSTAL INT NOT NULL,"\
+                                            "LIEU_DIT VARCHAR(255),"\
+                                            "NUMERO_VOIE INT NOT NULL,"\
+                                            "NOM_VOIE VARCHAR(255) NOT NULL,"\
+                                            "LONGITUDE VARCHAR(100) NOT NULL,"\
+                                            "LATITUDE VARCHAR(100) NOT NULL,"\
+                                            "AUCUN_AMENAGEMENT_ACCESSIBILITE VARCHAR(3),"\
+                                            "ACCESSIBILITE_HANDICAPE_MOBILITE_REDUITE VARCHAR(3) NOT NULL,"\
+                                            "ACCESSIBILITE_HANDICAPE_SENSORIEL VARCHAR(3) NOT NULL,"\
+                                            "PLACE_PARKING INT,"\
+                                            "PLACE_PARKING_HANDICAPE INT,"\
+                                            "INSTALLATION_PARTICULIERE VARCHAR(255))")
 
+    c.execute("CREATE TABLE equipement ( ID_EQUIPEMENTS INT PRIMARY KEY NOT NULL,"\
+                                        "NOM_EQUIPEMENTS VARCHAR(100) NOT NULL,"\
+                                        "NUMERO_INSTALLATION INT NOT NULL,"\
+                                        "CONSTRAINT fk_install FOREIGN KEY(NUMERO_INSTALLATION)"\
+                                        "REFERENCES installation(NUMERO_INSTALLATION))")
 
+    c.execute("CREATE TABLE equipements_activites ( ID_EQUIPEMENTS INT NOT NULL,"\
+                                                    "ID_ACTIVITES INT NOT NULL," \
+                                                    "NOM_ACTIVITES VARCHAR(100) NOT NULL," \
+                                                    "NIVEAU_ACTIVITE VARCHAR(100) NOT NULL,"\
+                                                    "CONSTRAINT fk_equipe FOREIGN KEY(ID_EQUIPEMENTS)"\
+                                                    "REFERENCES equipement(ID_EQUIPEMENTS))")
 
-"""class data:
-    def __init__(self, code, label):
-        self.code = code
-        self.label = label
-
-activity = data(1, "B")
+    conn.commit()
+    conn.close()
 
 
-c.execute("CREATE TABLE ")
+""" Ajoute les valeurs des fichiers.csv dans la base de données créés en amont """
 
-insert_query = "INSERT INTO test_table(code, label) VALUES (?, ?)"
+def add_datas():
+    # Connexion a database, if exist.
+    conn = sqlite3.connect('db/database.db')
+    c = conn.cursor()
 
-c.execute(insert_query, (activity.code, activity.label))"""
-conn.commit()
-conn.close()
+    #Dans un premier temps, je récupère tous les fichiers .csv qui vont me servir à compléter ma base de données.
+    file_equipment = codecs.open("files_csv/equipment.csv", "r", "utf-8")
+    file_equipment_activities = codecs.open("files_csv/activities_equipments.csv", "r", "utf-8")
+    file_installation = codecs.open("files_csv/installation.csv", "r", "utf-8")
+
+    #Ensuite je le lis, pour pouvoir par la suite le parcourir ligne par ligne.
+    #DictReader est une fonction permettant de retrouver une colonne via son nom et non son numéro.
+    file_equipment = csv.DictReader(file_equipment)
+    file_equipment_activities = csv.DictReader(file_equipment_activities)
+    file_installation = csv.DictReader(file_installation)
+
+    #Pour chaque fichier .csv, je parcours chaque ligne et récupère les colonnes qui m'interesse pour ma base de donnée.
+    for row in file_equipment:
+        obj_tmp = equipment(row['InsNumeroInstall'], row['EquipementId'], row['EquNom'])
+        obj_tmp.add_equipment(conn)
+
+    for row in file_equipment_activities:
+        obj_tmp = activities_equipments(row['EquipementId'], row['ActCode'], row['ActLib'], row['ActNivLib'])
+        obj_tmp.add_activities_equipments(conn)
+
+    for row in file_installation:
+        obj_tmp = installation(row["Numéro de l'installation"], row["Nom usuel de l'installation"], row["Nom de la commune"],
+                               row["Code postal"], row["Nom du lieu dit"], row["Numero de la voie"], row["Nom de la voie"],
+                               row['Longitude'], row['Latitude'], row["Aucun aménagement d'accessibilité"],
+                               row['Accessibilité handicapés à mobilité réduite'], row['Accessibilité handicapés sensoriels'],
+                               row['Nombre total de place de parking'], row['Nombre total de place de parking handicapés'],
+                               row['Installation particulière'])
+        obj_tmp.add_installation(conn)
+
+create_table()
+add_datas()

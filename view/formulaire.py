@@ -1,5 +1,3 @@
-from bottle import get, post, request, run
-
 
 def check_login(username, password):
     return username == password
