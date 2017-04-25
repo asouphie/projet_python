@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 class equipment :
     def __init__(self, NUMERO_INSTALLATION, ID_EQUIPEMENTS, NOM_EQUIPEMENTS ):
         self.NUMERO_INSTALLATION = NUMERO_INSTALLATION

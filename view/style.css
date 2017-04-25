@@ -1,0 +1,168 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    font-size: 62.5%;
+    height: 100%;
+    overflow: hidden;
+}
+@media (max-width: 768px) {
+    html, body {
+        font-size: 50%;
+    }
+}
+
+input, button {
+    outline: none;
+    border: none;
+}
+
+iframe {
+    height: 100%;
+    width: 100%;
+}
+
+a {
+    cursor: pointer;
+}
+
+.cont {
+    position: relative;
+    height: 100%;
+    background-size: cover;
+    overflow: hidden;
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
+}
+
+.cont-img {
+    background-image: url("http://www.iwit-systems.fr/modules/blog/images/preparation-physique-personal-training-coach-sportif.jpg");
+}
+
+.bandeau-action {
+    position: absolute;
+    right: 0%;
+    width: 30rem;
+    height: 100%;
+    overflow: hidden;
+}
+
+.bandeau-connect {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -15rem;
+    margin-top: -26.5rem;
+    width: 30rem;
+    height: 53rem;
+    overflow: hidden;
+    border-radius: 35px;
+}
+
+.cont-bandeau {
+    position: relative;
+    height: 100%;
+    background: -webkit-linear-gradient(top,  rgba(0, 0, 0, 0.69) 25%, rgba(0, 0, 0, 0.69) 25%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.69) 25%, rgba(0, 0, 0, 0.69) 25%);
+    -webkit-transition: opacity 0.1s, -webkit-transform 0.3s cubic-bezier(0.17, -0.65, 0.665, 1.25);
+    transition: opacity 0.1s, -webkit-transform 0.3s cubic-bezier(0.17, -0.65, 0.665, 1.25);
+    transition: opacity 0.1s, transform 0.3s cubic-bezier(0.17, -0.65, 0.665, 1.25);
+    transition: opacity 0.1s, transform 0.3s cubic-bezier(0.17, -0.65, 0.665, 1.25), -webkit-transform 0.3s cubic-bezier(0.17, -0.65, 0.665, 1.25);
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+.logo-pdl {
+    position: absolute;
+    top: 8rem;
+}
+
+.logo-pdl img {
+    width: 100%;
+    height: 100%;
+}
+
+.form-search {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    padding: 1.5rem 2.5rem;
+}
+.champs-texte {
+    height: 5rem;
+    padding-top: 1rem;
+    border-bottom: 1px solid #00bee8;
+}
+
+.champs-texte input {
+    display: inline-block;
+    width: 22rem;
+    height: 100%;
+    padding-left: 1.5rem;
+    font-size: 1.5rem;
+    background: transparent;
+    color: #00bee8;
+}
+
+#buttonSearch {
+    font-weight: bold;
+    position: relative;
+    width: 100%;
+    height: 4rem;
+    margin: 5rem 0 2.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    background: #b97ac1;
+    font-size: 1.5rem;
+    border-radius: 3rem;
+    cursor: pointer;
+    overflow: hidden;
+    -webkit-transition: width 0.3s 0.15s, font-size 0.1s 0.15s;
+    transition: width 0.3s 0.15s, font-size 0.1s 0.15s;
+}
+
+.invisible {
+    display: none;
+}
+
+.visible {
+    display: initial;
+}
+
+#zone-filtre {
+    padding-top: 1rem;
+}
+
+.filtre {
+    display: inline-block;
+    position: relative;
+    background-color: #cdcdcd;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80ffffff', endColorstr='#00ffffff', GradientType=0);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(255, 255, 255, 0.30)), color-stop(40%, rgba(255, 255, 255, 0.15)), to(transparent));
+    background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.15) 40%, transparent);
+    background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.15) 40%, transparent);
+    background-image: -ms-linear-gradient(rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.15) 40%, transparent);
+    background-image: -o-linear-gradient(rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.15) 40%, transparent);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.15) 40%, transparent);
+    text-decoration: none;
+    color: #333;
+    border-radius: 7px;
+    padding: 0px 2px;
+    font-size : 15px;
+    font-weight: bold;
+    line-height: 1.6em;
+}
+
+.filtre img {
+    padding: 3px;
+}
+
+.logo-add img {
+    margin-right : 0;
+    margin-bottom : -10px;
+    cursor: pointer;
+}
+
