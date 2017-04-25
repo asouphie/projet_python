@@ -23,3 +23,5 @@ function addFiltre(input) {
 
 function deleteFiltre() {}
 
+function reinitFiltre() {}
+
