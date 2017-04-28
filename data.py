@@ -76,11 +76,11 @@ def add_datas():
     #Pour chaque fichier .csv, je parcours chaque ligne et récupère les colonnes qui m'interesse pour ma base de donnée.
     for row in file_equipment:
         obj_tmp = equipment(row['InsNumeroInstall'], row['EquipementId'], row['EquNom'])
-        obj_tmp.add_equipment(conn)
+        obj_tmp.add_equipment(c)
 
     for row in file_equipment_activities:
         obj_tmp = activities_equipments(row['EquipementId'], row['ActCode'], row['ActLib'], row['ActNivLib'])
-        obj_tmp.add_activities_equipments(conn)
+        obj_tmp.add_activities_equipments(c)
 
     for row in file_installation:
         obj_tmp = installation(row["Numéro de l'installation"], row["Nom usuel de l'installation"], row["Nom de la commune"],
@@ -89,7 +89,30 @@ def add_datas():
                                row['Accessibilité handicapés à mobilité réduite'], row['Accessibilité handicapés sensoriels'],
                                row['Nombre total de place de parking'], row['Nombre total de place de parking handicapés'],
                                row['Installation particulière'])
-        obj_tmp.add_installation(conn)
+        obj_tmp.add_installation(c)
+
+    conn.commit()
+    conn.close()
+
+
+def insert_query(table, list_conditions):
+    insertQuery = "SELECT * FROM " + table
+
+    if list_conditions.length == 0:
+        return insertQuery
+    elif list_conditions.length == 1:
+        insertQuery = insertQuery + " WHERE " + list_conditions[0]
+        return insertQuery
+    elif list_conditions.length > 1:
+        insertQuery = insertQuery + " WHERE "
+        cpt = 0
+        for condition in list_conditions:
+            if list_conditions.length == cpt:
+                insertQuery = insertQuery + list_conditions[cpt]
+            else:
+                insertQuery = insertQuery + list_conditions[cpt] + " AND "
+            cpt += 1;
+        return insertQuery
 
 create_table()
 add_datas()
