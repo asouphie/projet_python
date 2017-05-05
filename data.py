@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import codecs
-import csv
-import sqlite3
-
 from classes.equipment import *
 from classes.activities_equipments import *
 from classes.installation import *
+
+import codecs
+import csv
+import sqlite3
 
 """ Fonction permettant de créer la base de données """
 
@@ -94,25 +94,4 @@ def add_datas():
     conn.commit()
     conn.close()
 
-
-def insert_query(table, list_conditions):
-    insertQuery = "SELECT * FROM " + table
-
-    if list_conditions.length == 0:
-        return insertQuery
-    elif list_conditions.length == 1:
-        insertQuery = insertQuery + " WHERE " + list_conditions[0]
-        return insertQuery
-    elif list_conditions.length > 1:
-        insertQuery = insertQuery + " WHERE "
-        cpt = 0
-        for condition in list_conditions:
-            if list_conditions.length == cpt:
-                insertQuery = insertQuery + list_conditions[cpt]
-            else:
-                insertQuery = insertQuery + list_conditions[cpt] + " AND "
-            cpt += 1;
-        return insertQuery
-
-create_table()
-add_datas()
+create_equipment(None, '440010002', None)

@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+from classes.fonctions_generales import insert_query
+
 import sqlite3
-from data import insert_query
 
 class installation :
     def __init__(self, NUMERO_INSTALLATON, NOM_INSTALLATIONS, NOM_COMMUNE, CODE_POSTAL, LIEU_DIT, NUMERO_VOIE, NOM_VOIE,
@@ -39,7 +41,7 @@ class installation :
 """ Permet, grâce à la base de données, de créer un ou des nouveaux objets installations """
 #Pour filtrer les objets à récupérer, il suffit de mettre 'None' pour les attributs qui ne nous interresse pas
 
-def create_activitie_equipment(id_installation, nom_installation, nom_commune, code_postal, lieu_dit, numero_voie, nom_voie,
+def create_installation(id_installation, nom_installation, nom_commune, code_postal, lieu_dit, numero_voie, nom_voie,
                  longitude, latitude, aucun_amm_handi, acces_handi_reduit, acces_handi_sens):
     #Je me connecte à ma base pour récupérer l'objet en question.
     conn = sqlite3.connect('db/database.db')
@@ -76,12 +78,12 @@ def create_activitie_equipment(id_installation, nom_installation, nom_commune, c
 
     c.execute(insertQuery)
 
-    d = {}
+    list = []
     #Je parcours toute les lignes récupérées, et je crée pour chacune un objet
     for row in c :
         #Je créer mon objet puis je le stocke dans un dictionnaire avec pour clé le numéro d'installation
         obj = installation(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13],row[14])
-        d = {row[0]:obj}
+        list.append(obj)
 
     conn.close()
-    return d
+    return list

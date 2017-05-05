@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+from classes.fonctions_generales import insert_query
+
 import sqlite3
-from data import insert_query
 
 class activities_equipments :
     def __init__(self, ID_EQUIPEMENTS, ID_ACTIVITES, NOM_ACTIVITES, NIVEAU_ACTIVITE):
@@ -17,14 +19,6 @@ class activities_equipments :
                       "NIVEAU_ACTIVITE) VALUES(?,?,?,?)"
         conn.execute(insertQuery, (self.ID_EQUIPEMENTS, self.ID_ACTIVITES,
                                    self.NOM_ACTIVITES, self.NIVEAU_ACTIVITE))
-
-    def create_activitie_equipment(conn, id_equipment):
-        insertQuery = "SELECT * FROM equipements_activites WHERE ID_EQUIPEMENTS = ?"
-        c = conn.cursor()
-        c.execute(insertQuery, id_equipment);
-
-        for row in c :
-            print(row)
 
 
 """ Permet, grâce à la base de données, de créer un ou des nouveaux objets activités_equipements """
@@ -50,12 +44,12 @@ def create_activitie_equipment(id_equipment, id_activite, nom_activite, niveau_a
 
     c.execute(insertQuery)
 
-    d = {}
+    list = []
     # Je parcours toute les lignes récupérées, et je crée pour chacune un objet
     for row in c :
         # Je créer mon objet puis je le stocke dans un dictionnaire avec pour clé le numéro d'activité
         obj = activities_equipments(row[0], row[1], row[2], row[3])
-        d = {row[1]:obj}
+        list.append(obj)
 
     conn.close()
-    return d
+    return list

@@ -5,11 +5,18 @@
         <title>Sport Pays de la Loire</title>
 
         <link rel="stylesheet" href="../view/style.css">
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="../view/script.js"></script>
+        <script type="text/javascript" src="../view/jquery.js"></script>
     </head>
 
-    <script type="text/javascript" src="../view/script.js"></script>
-
     <body onload="init()">
+
+        <input id="list_activite" type="hidden" value="{{list_activite}}">
+        <input id="list_ville_cp" type="hidden" value="{{list_villes_cp}}">
+
         <div id="contenu" class="cont cont-img">
             <div id ="bandeau" class="bandeau-connect">
                 <div class="cont-bandeau">
@@ -18,15 +25,15 @@
                     </div>
                     <div class="form-search">
                         <div class="champs-texte">
-                            <input type="text" id="champVille" placeholder="Ville/Code Postal"/>
-                            <a onclick="addFiltre('champVille')" class="logo-add">
-                                <img src="../view/add.png" width="25">
+                            <input type="text" id="select_villes" placeholder="Ville/Code Postal"/>
+                            <a onclick="addFiltre('select_villes')" class="logo-add" title="Ajouter une ville/un code postal">
+                                <img id="img_ville" src="../view/add_disabled.png" width="25">
                             </a>
                         </div>
                         <div class="champs-texte">
-                            <input type="text" id="champActivite" placeholder="Activité"/>
-                            <a onclick="addFiltre('champActivite');" class="logo-add">
-                                <img src="../view/add.png" width="25">
+                            <input type="text" id="select_activites" placeholder="Activité"/>
+                            <a onclick="addFiltre('select_activites');" class="logo-add" title="Ajouter une activité">
+                                <img id="img_activite" src="../view/add_disabled.png" width="25">
                             </a>
                         </div>
                         <div id="zone-filtre"></div>
