@@ -40,7 +40,6 @@ class installation :
 
 """ Permet, grâce à la base de données, de créer un ou des nouveaux objets installations """
 #Pour filtrer les objets à récupérer, il suffit de mettre 'None' pour les attributs qui ne nous interresse pas
-
 def create_installation(id_installation, nom_installation, nom_commune, code_postal, lieu_dit, numero_voie, nom_voie,
                  longitude, latitude, aucun_amm_handi, acces_handi_reduit, acces_handi_sens):
     #Je me connecte à ma base pour récupérer l'objet en question.
@@ -52,17 +51,17 @@ def create_installation(id_installation, nom_installation, nom_commune, code_pos
     if id_installation != None :
         list_conditions.append(" NUMERO_INSTALLATON = " + id_installation)
     if nom_installation != None :
-        list_conditions.append(" NUMERO_INSTALLATON LIKE " + nom_installation)
+        list_conditions.append(" NOM_INSTALLATONS LIKE '%{}%'".format(nom_installation))
     if nom_commune != None :
-        list_conditions.append(" NOM_COMMUNE LIKE " + nom_commune)
+        list_conditions.append(" NOM_COMMUNE LIKE '%{}%'".format(nom_commune))
     if code_postal != None :
-        list_conditions.append(" CODE_POSTAL = " + code_postal)
+        list_conditions.append(" CODE_POSTAL LIKE '%{}%'".format(code_postal))
     if lieu_dit != None :
-        list_conditions.append(" LIEU_DIT LIKE " + lieu_dit)
+        list_conditions.append(" LIEU_DIT LIKE '%{}%'".format(lieu_dit))
     if numero_voie != None :
         list_conditions.append(" NUMERO_VOIE = " + numero_voie)
     if nom_voie != None :
-        list_conditions.append(" NOM_VOIE LIKE " + nom_voie)
+        list_conditions.append(" NOM_VOIE LIKE '%{}%'".format(nom_voie))
     if longitude != None :
         list_conditions.append(" LONGITUDE = " + longitude)
     if latitude != None :
@@ -73,9 +72,9 @@ def create_installation(id_installation, nom_installation, nom_commune, code_pos
         list_conditions.append(" ACCESSIBILITE_HANDICAPE_MOBILITE_REDUITE = " + acces_handi_reduit)
     if acces_handi_sens != None :
         list_conditions.append(" ACCESSIBILITE_HANDICAPE_SENSORIEL = " + acces_handi_sens)
+
     #Je récupère ma requête à exécuter
     insertQuery = insert_query('installations', list_conditions)
-
     c.execute(insertQuery)
 
     list = []

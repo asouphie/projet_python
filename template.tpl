@@ -14,9 +14,6 @@
 
     <body onload="init()">
 
-        <input id="list_activite" type="hidden" value="{{list_activite}}">
-        <input id="list_ville_cp" type="hidden" value="{{list_villes_cp}}">
-
         <div id="contenu" class="cont cont-img">
             <div id ="bandeau" class="bandeau-connect">
                 <div class="cont-bandeau">
@@ -25,16 +22,10 @@
                     </div>
                     <div class="form-search">
                         <div class="champs-texte">
-                            <input type="text" id="select_villes" placeholder="Ville/Code Postal"/>
-                            <a onclick="addFiltre('select_villes')" class="logo-add" title="Ajouter une ville/un code postal">
-                                <img id="img_ville" src="../view/add_disabled.png" width="25">
-                            </a>
+                            <input type="text" id="select_town" placeholder="Ville/Code Postal"/>
                         </div>
                         <div class="champs-texte">
-                            <input type="text" id="select_activites" placeholder="Activité"/>
-                            <a onclick="addFiltre('select_activites');" class="logo-add" title="Ajouter une activité">
-                                <img id="img_activite" src="../view/add_disabled.png" width="25">
-                            </a>
+                            <input type="text" id="select_activities" placeholder="Activité"/>
                         </div>
                         <div id="zone-filtre"></div>
                         <button id="buttonSearch" type="button">Rechercher</button>

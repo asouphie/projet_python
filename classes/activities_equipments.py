@@ -34,11 +34,11 @@ def create_activitie_equipment(id_equipment, id_activite, nom_activite, niveau_a
     if id_equipment != None :
         list_condition.append(" ID_EQUIPEMENTS = " + id_equipment)
     if id_activite != None :
-        list_condition.append(" ID_ACTIVITES = " + id_equipment)
+        list_condition.append(" ID_ACTIVITES = " + id_activite)
     if nom_activite != None :
-        list_condition.append(" NOM_ACTIVITES LIKE " + nom_activite)
+        list_condition.append(" NOM_ACTIVITES LIKE '%{}%'".format(nom_activite))
     if niveau_activite != None :
-        list_condition.append(" NIVEAU_ACTIVITE LIKE " + niveau_activite)
+        list_condition.append(" NIVEAU_ACTIVITE LIKE '%{}%'".format(niveau_activite))
     # Je récupère ma requête à exécuter
     insertQuery = insert_query('equipements_activites', list_condition)
 

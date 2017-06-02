@@ -4,68 +4,45 @@
 from classes.activities_equipments import create_activitie_equipment
 from classes.installation import create_installation
 
-"""" Retourne une string contenant toute les activités, séparées par des virgules, pour la stocker par la suite dans un input. """
+"""" Retourne une liste d'activités contenant l'id et le nom de l'activité. """
+def list_activity(activity, max_rows):
+    lst_activity = []
+    lst_name_activity = []
 
-def list_activite() :
-    list_act = ""
-    premier = True
+    activities = create_activitie_equipment(None, None, activity, None)
 
-    list_act_equi = create_activitie_equipment(None, None, None, None)
+    cpt = 0
 
-    for act_equi in list_act_equi :
-        nom = act_equi.NOM_ACTIVITES.split("/")
-        for name in nom :
-            if premier :
-                list_act = '"'+ name + '"'
-                premier = False
-            elif name not in list_act:
-                list_act = list_act + ', "' + name + '"'
+    for activity in activities :
+        name = activity.NOM_ACTIVITES.split("/")
+        for name_activity in name :
+            if cpt <= int(max_rows) and name_activity not in lst_name_activity :
+                lst_name_activity.append(name_activity)
+                lst_activity.append({"id_activity": activity.ID_ACTIVITES, "name_activity": name_activity})
+            elif cpt > int(max_rows) :
+                break
+            else :
+                continue
 
-    return list_act
+    return lst_activity
 
-""" Retourne un dictionnaire contenant comme clé le code postale et comme valeur le nom de la ville. """
+""" Retourne une liste d'adresse contenant le code postale et le nom de la ville. """
+def list_adress(town, zip, max_rows) :
+    list_town_zip = []
+    list_zip = []
 
-def dico_ville() :
-    dico_ville_cp = {}
+    list_installation = create_installation(None, None, town, zip, None, None, None, None, None, None, None, None)
 
-    list_installations = create_installation(None, None, None, None, None, None, None, None, None, None, None, None)
+    cpt = 0
 
-    for installation in list_installations :
-        if installation.NOM_COMMUNE not in dico_ville_cp.values() :
-            dico_ville_cp[installation.CODE_POSTAL] = installation.NOM_COMMUNE
+    for installation in list_installation :
+        if cpt <= int(max_rows) and installation.CODE_POSTAL not in list_zip :
+            list_zip.append(installation.CODE_POSTAL)
+            list_town_zip.append({"zip" : installation.CODE_POSTAL , "town" : installation.NOM_COMMUNE})
+            cpt = cpt + 1
+        elif cpt > int(max_rows) :
+            break
+        else :
+            continue
 
-    return dico_ville_cp
-
-""" Retourne une string contenant tous les noms des villes, sans les doublons, séparées par une virgule. """
-
-def list_ville() :
-    list_ville_cp = dico_ville()
-    list_villes = ""
-
-    premier = True;
-
-    for ville in list_ville_cp.values() :
-        if premier :
-            list_villes = '"' + ville + '"'
-            premier = False
-        elif ville not in list_villes :
-            list_villes = list_villes + ', "' + ville + '"'
-
-    return list_villes
-
-"""" Retourne une string contenant tous les codes postales, sans les doublons, séparées par une virgule. """
-
-def list_cp() :
-    list_ville_cp = dico_ville()
-    list_cps = ""
-
-    premier = True;
-
-    for cp in list_ville_cp :
-        if premier :
-            list_cps = '"' + str(cp) + '"'
-            premier = False
-        elif str(cp) not in list_cps :
-            list_cps = list_cps + ', "' + str(cp) + '"'
-
-    return list_cps
+    return list_town_zip
