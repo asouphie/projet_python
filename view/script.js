@@ -36,7 +36,8 @@ $(document).ready(function(){
     });
 
     $('#select_activities').change(function() {
-        $('#activity').val("");
+        var val = $('#select_activities').val();
+        $('#activity').val(val);
     });
 
     $("#select_town").autocomplete({
@@ -144,14 +145,14 @@ $(document).ready(function(){
 
                         $.map(datas, function (objet) {
                             if (firstItem) {
-                                mapCenter = new google.maps.LatLng(objet.latitude,objet.longitude)
+                                mapCenter = new google.maps.LatLng(objet.equi_gps_y,objet.equi_gps_x);
                                 map.panTo(mapCenter);
                                 firstItem = false;
                             }
 
                             //marker à ajouter sur la carte
                             var marker = new google.maps.Marker({
-                                position: new google.maps.LatLng(objet.latitude, objet.longitude),
+                                position: new google.maps.LatLng(objet.equi_gps_y,objet.equi_gps_x),
                                 map: map,
                                 title: objet.towm + ": " + objet.name_act
                             })

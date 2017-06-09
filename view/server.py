@@ -2,7 +2,7 @@ import json
 
 from bottle import route, template, run, static_file, get, request
 
-from view.functions import list_adress, list_activity, list_for_map
+from view.functions_view import list_adress, list_activity, list_for_map
 
 
 @route('/view/<filename>', name='view')
@@ -21,16 +21,16 @@ def search():
 def list_town_zip():
     town = None
     zip = None
-    maxRows = None
+    max_rows = None
     #On vérifie que la requête existe, si c'est le cas, alors la ville/le code postal prendra la valeur de la requete.
     if request.query.town:
         town = request.query.town
     if request.query.zip:
         zip = request.query.zip
     if request.query.max_rows:
-        maxRows = request.query.max_rows
+        max_rows = request.query.max_rows
 
-    list_town_zip = list_adress(town, zip, maxRows)
+    list_town_zip = list_adress(town, zip, max_rows)
 
     return json.dumps(list_town_zip)
 
@@ -60,7 +60,7 @@ def search_activity():
     if request.query.town:
         town = request.query.town
 
-        listMap = list_for_map(activity, zip, town)
+    listMap = list_for_map(activity, zip, town)
 
     return json.dumps(listMap)
 

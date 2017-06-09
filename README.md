@@ -1,5 +1,12 @@
-#Projet python : sport dans le Pays de la Loire
+# Projet python : sport dans le Pays de la Loire
 
+Ce projet consiste à créer un site web qui permet d'afficher les
+activités dans le pays de la loire, grâce à l'open data.
+
+Le site est géré dans sa quasi-totalité en python. Toute la base
+de donnée, ainsi que le serveur est en python. Tout le code html
+est contenu dans des fichiers templates (.tpl) et le reste est du
+javascript.
 
 ### Récupération du projet via GitHub
 
@@ -9,7 +16,14 @@ via github :
     git clone "https://github.com/asouphie/projet_python.git"
 ````
 
-###Implémentation de la base de données
+### Implémentation de la base de données
+
+Ensuite, télécharger les trois fichiers suivants : 
+1. http://data.paysdelaloire.fr/donnees/detail/equipements-sportifs-espaces-et-sites-de-pratiques-en-pays-de-la-loire-fiches-installations/
+2. http://data.paysdelaloire.fr/donnees/detail/equipements-sportifs-espaces-et-sites-de-pratiques-en-pays-de-la-loire-fiches-equipements/
+3. http://data.paysdelaloire.fr/donnees/detail/equipements-sportifs-espaces-et-sites-de-pratiques-en-pays-de-la-loire-activites-des-fiches-equ/
+
+Et les placer dans le projet, dans le dossier : "files_csv".
 
 Ensuite, en vous placant dans le premier dossier du projet, c'est-à-
 dire "projet_python" taper la commande suivante dans votre terminal : 
@@ -20,7 +34,7 @@ dire "projet_python" taper la commande suivante dans votre terminal :
 Cela va implémenter la base de données pour pouvoir la manipuler par 
 la suite.
 
-###Lancement du serveur
+### Lancement du serveur
 
 Avant de lancer votre serveur, il va d'abord falloir que vous téléchargiez
 bottle.py, si vous ne l'avez pas déjà. Deux façons possible s'offre à vous : 
