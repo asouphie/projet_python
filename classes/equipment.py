@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from classes.fonctions_generales import insert_query
+from classes.fonctions_generales import select_query
 
 import sqlite3
 
@@ -18,26 +18,26 @@ class equipment :
         conn.execute(insertQuery, (self.ID_EQUIPEMENTS, self.NOM_EQUIPEMENTS, self.NUMERO_INSTALLATION))
 
 
-""" Permet, grâce à la base de données, de créer un ou des nouveaux objets équipements """
-#Pour filtrer les objets à récupérer, il suffit de mettre 'None' pour les attributs qui ne nous interresse pas
-
-def create_equipment(id_equipment, numero_installation, nom_equipement):
+"""
+    Permet, grâce à la base de données, de créer un ou des nouveaux objets équipements
+    Pour filtrer les objets à récupérer, il suffit de mettre 'None' pour les attributs qui ne nous interresse pas
+"""
+def create_equipment(idEquipment, numInstallation, nameEquipment):
     #Je me connecte à ma base pour récupérer l'objet en question.
     conn = sqlite3.connect('db/database.db')
     c = conn.cursor()
-    list_conditions = []
+    listConditions = []
 
     # Je récupère les conditions pour la base de données, que j'insère ensuite dans la liste list_conditions
-    if id_equipment != None :
-        list_conditions.append(" ID_EQUIPEMENTS = " + id_equipment)
-    if numero_installation != None :
-        list_conditions.append(" NUMERO_INSTALLATION = " + numero_installation)
-    if nom_equipement != None :
-        list_conditions.append(" NOM_EQUIPEMENTS LIKE " + nom_equipement)
+    if idEquipment != None :
+        listConditions.append(" ID_EQUIPEMENTS = " + idEquipment)
+    if numInstallation != None :
+        listConditions.append(" NUMERO_INSTALLATION = " + numInstallation)
+    if nameEquipment != None :
+        listConditions.append(" NOM_EQUIPEMENTS LIKE " + nameEquipment)
     # Je récupère ma requête à exécuter
-    insertQuery = insert_query('equipement', list_conditions)
-    print("requête : " + insertQuery)
-    c.execute(insertQuery)
+    query = select_query('equipement', listConditions)
+    c.execute(query)
 
     list = []
     # Je parcours toute les lignes récupérées, et je crée pour chacune un objet

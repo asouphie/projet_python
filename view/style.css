@@ -55,8 +55,8 @@ a {
     left: 50%;
     margin-left: -15rem;
     margin-top: -26.5rem;
-    width: 30rem;
-    height: 53rem;
+    width: 35rem;
+    height: 35rem;
     overflow: hidden;
     border-radius: 35px;
 }
@@ -76,7 +76,7 @@ a {
 
 .logo-pdl {
     position: absolute;
-    top: 8rem;
+    top: 5rem;
 }
 
 .logo-pdl img {
@@ -108,7 +108,7 @@ a {
     color: #00bee8;
 }
 
-#buttonSearch {
+#buttonSearch, #buttonIndex {
     font-weight: bold;
     position: relative;
     width: 100%;
@@ -124,46 +124,10 @@ a {
     transition: width 0.3s 0.15s, font-size 0.1s 0.15s;
 }
 
-.invisible {
-    display: none;
+#map {
+    position : initial !important;
 }
 
-.visible {
-    display: initial;
-}
 
-#zone-filtre {
-    padding-top: 1rem;
-}
 
-.filtre {
-    display: inline-block;
-    position: relative;
-    background-color: #cdcdcd;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80ffffff', endColorstr='#00ffffff', GradientType=0);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(255, 255, 255, 0.30)), color-stop(40%, rgba(255, 255, 255, 0.15)), to(transparent));
-    background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.15) 40%, transparent);
-    background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.15) 40%, transparent);
-    background-image: -ms-linear-gradient(rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.15) 40%, transparent);
-    background-image: -o-linear-gradient(rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.15) 40%, transparent);
-    background-image: linear-gradient(rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.15) 40%, transparent);
-    text-decoration: none;
-    color: #333;
-    border-radius: 7px;
-    padding: 0px 2px;
-    font-size : 15px;
-    font-weight: bold;
-    line-height: 1.6em;
-}
-
-.filtre img {
-    padding: 3px;
-    margin: 5px;
-}
-
-.logo-add img {
-    margin-right : 0;
-    margin-bottom : -10px;
-    cursor: pointer;
-}
 

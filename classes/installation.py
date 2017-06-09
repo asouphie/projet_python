@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from classes.fonctions_generales import insert_query
+from classes.fonctions_generales import select_query
 
 import sqlite3
 
@@ -27,7 +27,6 @@ class installation :
         self.INSTALLATION_PARTICULIERE = INSTALLATION_PARTICULIERE
 
     """ Permet d'ajouter une installation dans la base de donnée """
-
     def add_installation(self, conn):
         insertQuery = "INSERT INTO installations(NUMERO_INSTALLATON, NOM_INSTALLATIONS, NOM_COMMUNE, CODE_POSTAL, LIEU_DIT, NUMERO_VOIE, NOM_VOIE,\
                                                     LONGITUDE, LATITUDE, AUCUN_AMENAGEMENT_ACCESSIBILITE, ACCESSIBILITE_HANDICAPE_MOBILITE_REDUITE,\
@@ -38,44 +37,46 @@ class installation :
                                     self.ACCESSIBILITE_HANDICAPE_SENSORIEL, self.PLACE_PARKING, self.PLACE_PARKING_HANDICAPE, self.INSTALLATION_PARTICULIERE ))
 
 
-""" Permet, grâce à la base de données, de créer un ou des nouveaux objets installations """
-#Pour filtrer les objets à récupérer, il suffit de mettre 'None' pour les attributs qui ne nous interresse pas
-def create_installation(id_installation, nom_installation, nom_commune, code_postal, lieu_dit, numero_voie, nom_voie,
+"""
+    Permet, grâce à la base de données, de créer un ou des nouveaux objets installations
+    Pour filtrer les objets à récupérer, il suffit de mettre 'None' pour les attributs qui ne nous interresse pas
+"""
+def create_installation(idInstallation, nameInstallation, town, zip, lieuDit, numStreet, nameStreet,
                  longitude, latitude, aucun_amm_handi, acces_handi_reduit, acces_handi_sens):
     #Je me connecte à ma base pour récupérer l'objet en question.
     conn = sqlite3.connect('db/database.db')
     c = conn.cursor()
-    list_conditions = []
+    listConditions = []
 
     #Je récupère les conditions pour la base de données, que j'insère ensuite dans la liste list_conditions
-    if id_installation != None :
-        list_conditions.append(" NUMERO_INSTALLATON = " + id_installation)
-    if nom_installation != None :
-        list_conditions.append(" NOM_INSTALLATONS LIKE '%{}%'".format(nom_installation))
-    if nom_commune != None :
-        list_conditions.append(" NOM_COMMUNE LIKE '%{}%'".format(nom_commune))
-    if code_postal != None :
-        list_conditions.append(" CODE_POSTAL LIKE '%{}%'".format(code_postal))
-    if lieu_dit != None :
-        list_conditions.append(" LIEU_DIT LIKE '%{}%'".format(lieu_dit))
-    if numero_voie != None :
-        list_conditions.append(" NUMERO_VOIE = " + numero_voie)
-    if nom_voie != None :
-        list_conditions.append(" NOM_VOIE LIKE '%{}%'".format(nom_voie))
+    if idInstallation != None :
+        listConditions.append(" NUMERO_INSTALLATON = " + idInstallation)
+    if nameInstallation != None :
+        listConditions.append(" NOM_INSTALLATIONS LIKE '%{}%'".format(nameInstallation))
+    if town != None :
+        listConditions.append(" NOM_COMMUNE LIKE '%{}%'".format(town))
+    if zip != None :
+        listConditions.append(" CODE_POSTAL LIKE '%{}%'".format(zip))
+    if lieuDit != None :
+        listConditions.append(" LIEU_DIT LIKE '%{}%'".format(lieuDit))
+    if numStreet != None :
+        listConditions.append(" NUMERO_VOIE = " + numStreet)
+    if nameStreet != None :
+        listConditions.append(" NOM_VOIE LIKE '%{}%'".format(nameStreet))
     if longitude != None :
-        list_conditions.append(" LONGITUDE = " + longitude)
+        listConditions.append(" LONGITUDE = " + longitude)
     if latitude != None :
-        list_conditions.append(" LATITUDE = " + latitude)
+        listConditions.append(" LATITUDE = " + latitude)
     if aucun_amm_handi != None :
-        list_conditions.append(" AUCUN_AMENAGEMENT_ACCESSIBILITE = " + aucun_amm_handi)
+        listConditions.append(" AUCUN_AMENAGEMENT_ACCESSIBILITE = " + aucun_amm_handi)
     if acces_handi_reduit != None :
-        list_conditions.append(" ACCESSIBILITE_HANDICAPE_MOBILITE_REDUITE = " + acces_handi_reduit)
+        listConditions.append(" ACCESSIBILITE_HANDICAPE_MOBILITE_REDUITE = " + acces_handi_reduit)
     if acces_handi_sens != None :
-        list_conditions.append(" ACCESSIBILITE_HANDICAPE_SENSORIEL = " + acces_handi_sens)
+        listConditions.append(" ACCESSIBILITE_HANDICAPE_SENSORIEL = " + acces_handi_sens)
 
     #Je récupère ma requête à exécuter
-    insertQuery = insert_query('installations', list_conditions)
-    c.execute(insertQuery)
+    query = select_query('installations', listConditions)
+    c.execute(query)
 
     list = []
     #Je parcours toute les lignes récupérées, et je crée pour chacune un objet
@@ -86,3 +87,39 @@ def create_installation(id_installation, nom_installation, nom_commune, code_pos
 
     conn.close()
     return list
+
+"""
+    Permet de retourner une liste d'objet contenant tout ce que je souhaite utiliser pour les
+    :argument
+        :parameter: zip
+
+"""
+def installation_for_activity(zip, town, nameActivity) :
+    conn = sqlite3.connect('db/database.db')
+    c = conn.cursor()
+
+    query = "SELECT DISTINCT i.NOM_INSTALLATIONS, i.NUMERO_VOIE, i.NOM_VOIE, i.NOM_COMMUNE, i.CODE_POSTAL, i.LONGITUDE, i.LATITUDE," \
+                   "a.NOM_ACTIVITES, a.NIVEAU_ACTIVITE, e.NOM_EQUIPEMENTS  FROM equipement AS e INNER JOIN equipements_activites AS a ON"
+
+    if nameActivity != None :
+        query = query + " a.NOM_ACTIVITES = '{}' AND".format(nameActivity)
+
+    query = query + " e.ID_EQUIPEMENTS = a.ID_EQUIPEMENTS INNER JOIN installations AS i ON e.NUMERO_INSTALLATION = i.NUMERO_INSTALLATON"
+
+    if zip != None and town != None :
+        query = query + " AND i.NOM_COMMUNE = '{}' AND i.CODE_POSTAL = '{}'".format(town, zip)
+
+
+    c.execute(query)
+
+    list = []
+
+    for row in c :
+        list.append({'name_install' : row[0], 'num_street' : row[1], 'name_street' : row[2], 'town' : row[3], 'zip' : row[4],
+                     'longitude': row[5], 'latitude': row[6], 'name_act' : row[7], 'niv_act' : row[8], 'name_equipment' : row[9]})
+
+    conn.commit()
+    conn.close()
+
+    return list
+
