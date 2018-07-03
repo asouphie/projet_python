@@ -5,6 +5,7 @@ from datas.functions_datas import select_query
 
 import sqlite3
 
+
 class installation :
 
     def __init__(self, NUMERO_INSTALLATON, NOM_INSTALLATIONS, NOM_COMMUNE, CODE_POSTAL, NUMERO_VOIE, NOM_VOIE):
@@ -24,7 +25,8 @@ class installation :
 
         insertQuery = "INSERT INTO installations(NUMERO_INSTALLATON, NOM_INSTALLATIONS, NOM_COMMUNE, CODE_POSTAL, NUMERO_VOIE, NOM_VOIE)\
                                                     VALUES(?,?,?,?,?,?)"
-        conn.execute(insertQuery, ( self.NUMERO_INSTALLATON, self.NOM_INSTALLATIONS, self.NOM_COMMUNE, self.CODE_POSTAL, self.NUMERO_VOIE, self.NOM_VOIE))
+        conn.execute(insertQuery, (self.NUMERO_INSTALLATON, self.NOM_INSTALLATIONS, self.NOM_COMMUNE, self.CODE_POSTAL, self.NUMERO_VOIE, self.NOM_VOIE))
+
 
 def create_object_installation(id_installation, name_installation, town, zip, num_street, name_street):
     """
@@ -39,37 +41,35 @@ def create_object_installation(id_installation, name_installation, town, zip, nu
             :parameter: name_street
     """
 
-    #Je me connecte à ma base pour récupérer l'objet en question.
+    # Je me connecte à ma base pour récupérer l'objet en question.
     conn = sqlite3.connect('db/database.db')
     c = conn.cursor()
     list_conditions = []
 
-    #Je récupère les conditions pour la base de données, que j'insère ensuite dans la liste list_conditions
-    if id_installation != None :
+    # Je récupère les conditions pour la base de données, que j'insère ensuite dans la liste list_conditions
+    if id_installation is not None:
         list_conditions.append(" NUMERO_INSTALLATON = " + id_installation)
-    if name_installation != None :
+    if name_installation is not None:
         list_conditions.append(" NOM_INSTALLATIONS LIKE '%{}%'".format(name_installation))
-    if town != None :
+    if town is not None:
         list_conditions.append(" NOM_COMMUNE LIKE '%{}%'".format(town))
-    if zip != None :
+    if zip is not None:
         list_conditions.append(" CODE_POSTAL LIKE '%{}%'".format(zip))
-    if num_street != None :
+    if num_street is not None:
         list_conditions.append(" NUMERO_VOIE = " + num_street)
-    if name_street != None :
+    if name_street is not None:
         list_conditions.append(" NOM_VOIE LIKE '%{}%'".format(name_street))
 
-    #Je récupère ma requête à exécuter
+    # Je récupère ma requête à exécuter
     query = select_query('installations', list_conditions)
     c.execute(query)
 
     list = []
-    #Je parcours toute les lignes récupérées, et je crée pour chacune un objet
-    for row in c :
-        #Je créer mon objet puis je le stocke dans un dictionnaire avec pour clé le numéro d'installation
-        obj = installation(row[0],row[1],row[2],row[3],row[4],row[5])
+    # Je parcours toute les lignes récupérées, et je crée pour chacune un objet
+    for row in c:
+        # Je créer mon objet puis je le stocke dans un dictionnaire avec pour clé le numéro d'installation
+        obj = installation(row[0], row[1], row[2], row[3], row[4], row[5])
         list.append(obj)
 
     conn.close()
     return list
-
-

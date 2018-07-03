@@ -5,6 +5,7 @@ from datas.functions_datas import select_query
 
 import sqlite3
 
+
 class activities_equipments :
     def __init__(self, ID_EQUIPEMENTS, ID_ACTIVITES, NOM_ACTIVITES, NIVEAU_ACTIVITE):
         self.ID_EQUIPEMENTS = ID_EQUIPEMENTS
@@ -34,19 +35,19 @@ def create_object_activitie_equipment(id_equipment, id_activity, name_activity, 
             :parameter: level_activity
     """
 
-    #Je me connecte à ma base pour récupérer le(s) objet(s) en question.
+    # Je me connecte à ma base pour récupérer le(s) objet(s) en question.
     conn = sqlite3.connect('db/database.db')
     c = conn.cursor()
     list_condition = []
 
     # Je récupère les conditions pour la base de données, que j'insère ensuite dans la liste list_conditions
-    if id_equipment != None :
+    if id_equipment is not None:
         list_condition.append(" ID_EQUIPEMENTS = " + id_equipment)
-    if id_activity != None :
+    if id_activity is not None:
         list_condition.append(" ID_ACTIVITES = " + id_activity)
-    if name_activity != None :
+    if name_activity is not None:
         list_condition.append(" NOM_ACTIVITES LIKE '%{}%'".format(name_activity))
-    if level_activity != None :
+    if level_activity is not None:
         list_condition.append(" NIVEAU_ACTIVITE LIKE '%{}%'".format(level_activity))
     # Je récupère ma requête à exécuter
     query = select_query('equipements_activites', list_condition)

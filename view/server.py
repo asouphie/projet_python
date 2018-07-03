@@ -9,20 +9,23 @@ from view.functions_view import list_adress, list_activity, list_for_map
 def server_view(filename) :
     return static_file(filename, root='view')
 
+
 @route('/index')
 def index():
     return template('template')
 
+
 @get('/search')
 def search():
     return template('template2')
+
 
 @get('/list_town_zip')
 def list_town_zip():
     town = None
     zip = None
     max_rows = None
-    #On vérifie que la requête existe, si c'est le cas, alors la ville/le code postal prendra la valeur de la requete.
+    # On vérifie que la requête existe, si c'est le cas, alors la ville/le code postal prendra la valeur de la requete.
     if request.query.town:
         town = request.query.town
     if request.query.zip:
@@ -33,6 +36,7 @@ def list_town_zip():
     list_town_zip = list_adress(town, zip, max_rows)
 
     return json.dumps(list_town_zip)
+
 
 @get('/list_activities')
 def list_activities():
@@ -46,6 +50,7 @@ def list_activities():
 
     activities = list_activity(activity, maxRows)
     return json.dumps(activities)
+
 
 @get('/search_activity')
 def search_activity():

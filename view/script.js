@@ -137,7 +137,6 @@ $(document).ready(function(){
                 dataType: 'json',
                 success:
                     function (datas) {
-                        alert(datas);
                         var firstItem = true;
 				        var mapCenter;
 
